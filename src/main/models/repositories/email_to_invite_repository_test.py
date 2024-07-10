@@ -18,7 +18,7 @@ def test_registryEmail():
     }
 
     emails_to_invite_repository.registryEmail(email_trip_infos)
-    
+
 @pytest.mark.skip(reason="interacao com o banco")
 def test_findEmailsFromTrip():
     conn = db_connection_handler.get_connection()
