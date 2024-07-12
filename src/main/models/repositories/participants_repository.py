@@ -23,27 +23,27 @@ class ParticipantsRepository:
         )
         self.__conn.commit()
 
-        def findParticipantsFromTrip(self, trip_id : str) -> List[Tuple]:
-            cursor = self.__conn.cursor()
-            cursor.execute(
-                '''
-                    SELECT p.id, p.name, p.is_confirmed, e.email
-                    from participants 
-                    JOIN emails_to_invite as e ON e.id = p.emails_to_invite_id
-                    WHERE p.trip_id = ?
-                ''', (trip_id,)
-            )
-            participants = cursor.fetchall()
-            return participants
+    def findParticipantFromTrip(self, trip_id : str) -> List[Tuple]:
+        cursor = self.__conn.cursor()
+        cursor.execute(
+             '''
+                SELECT p.id, p.name, p.is_confirmed, e.email
+                from participants as p
+                JOIN emails_to_invite as e ON e.id = p.emails_to_invite_id
+                WHERE p.trip_id = ?
+            ''', (trip_id,)
+        )
+        participants = cursor.fetchall()
+        return participants
         
-        def updateParticipantStatus(self, participant_id : str) -> None:
-            cursor = self.__conn.cursor()
-            cursor.execute(
-                '''
-                UPDATE participantes 
-                    SET is_confirmed = 1
-                WHERE 
-                    id = ?
-                ''', (participant_id,)
-            )
-            self.__conn.commit()
+    def updateParticipantStatus(self, participant_id : str) -> None:
+        cursor = self.__conn.cursor()
+        cursor.execute(
+            '''
+            UPDATE participants 
+                SET is_confirmed = 1
+            WHERE 
+                id = ?
+            ''', (participant_id,)
+        )
+        self.__conn.commit()
